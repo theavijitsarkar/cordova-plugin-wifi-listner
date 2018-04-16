@@ -1,0 +1,27 @@
+{
+  "name": "cordova-plugin-wifi-listner",
+  "version": "0.0.1",
+  "description": "Listen to wifi ssid changes in cordova",
+  "cordova": {
+    "id": "cordova-plugin-wifi-listner",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theavijitsarkar/cordova-plugin-wifi-listner.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Avijit Sarkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theavijitsarkar/cordova-plugin-wifi-listner/issues"
+  },
+  "homepage": "https://github.com/theavijitsarkar/cordova-plugin-wifi-listner#readme"
+}
