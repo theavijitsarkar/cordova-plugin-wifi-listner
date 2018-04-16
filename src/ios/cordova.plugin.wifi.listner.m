@@ -2,14 +2,14 @@
 
 #import <Cordova/CDV.h>
 
-@interface cordova-plugin-wifi-listner : CDVPlugin {
+@interface cordova.plugin.wifi.listner : CDVPlugin {
   // Member variables go here.
 }
 
 - (void)coolMethod:(CDVInvokedUrlCommand*)command;
 @end
 
-@implementation cordova-plugin-wifi-listner
+@implementation cordova.plugin.wifi.listner
 
 - (void)coolMethod:(CDVInvokedUrlCommand*)command
 {

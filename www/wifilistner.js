@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
 
 exports.coolMethod = function(arg0, success, error) {
-    exec(success, error, "cordova-plugin-wifi-listner", "coolMethod", [arg0]);
+    exec(success, error, "wifilistner", "coolMethod", [arg0]);
 };
