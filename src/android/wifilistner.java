@@ -1,4 +1,4 @@
-package cordova.plugin.wifi.listner;
+package com.avifa.wifilistner;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -9,19 +9,18 @@ import org.json.JSONObject;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
+
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 
 import android.content.IntentFilter;
 import android.net.wifi.*;
 
+
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -33,27 +32,25 @@ public class wifilistner extends CordovaPlugin {
         String mac = args.getString(0);
         String text = args.getString(2);
         String title = args.getString(1);
-        BroadcastReceiver broadcastReceiver = new WifiChange(mac, getApplicationContext(),title,text);
+        
+        final Context context = this.cordova.getActivity().getApplicationContext();
+        
+        BroadcastReceiver broadcastReceiver = new WifiChange(mac, context ,title,text);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 
+        
+
         if (action.equals("startTracker")) {
-            getApplicationContext().registerReceiver(broadcastReceiver, intentFilter);
+            webView.getContext().registerReceiver(broadcastReceiver, intentFilter);
             return true;
         }
 
         if (action.equals("stopTracker")) {
-            getApplicationContext().registerReceiver(broadcastReceiver);
+            webView.getContext().unregisterReceiver(broadcastReceiver);
             return true;
         }
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
-        }
-    }
 }

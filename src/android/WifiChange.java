@@ -1,4 +1,4 @@
-package cordova.plugin.wifi.listner;
+package com.avifa.wifilistner;
 
 
 import android.content.BroadcastReceiver;
@@ -6,18 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.*;
 import 	android.widget.Toast;
-import android.support.v7.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.*;
 
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
+
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.content.LocalBroadcastManager;
 
 public class WifiChange extends BroadcastReceiver  {
     public String mac;
@@ -48,16 +54,16 @@ public class WifiChange extends BroadcastReceiver  {
                     String bssid = wifi.getBSSID();
 
                     boolean connected = this.mac.toUpperCase().equals(bssid.toUpperCase());
-//                    Toast.makeText(context.getApplicationContext(),"BSSID: "+bssid+"Connected : "+connected,Toast.LENGTH_SHORT).show();
-                            if(connected){
 
-                                NotificationCompat.Builder builder =
-                                        new NotificationCompat.Builder(context.getApplicationContext())
-                                                .setSmallIcon(R.mipmap.ic_launcher)
-                                                .setContentTitle(this.title)
-                                                .setContentText(this.text);
+                        if(connected){
 
-                                Intent notificationIntent = new Intent(context.getApplicationContext(), MainActivity.class);
+                                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext())
+                                            .setSmallIcon(context.getApplicationInfo().icon)
+                                            .setContentTitle(this.title)
+                                            .setContentText(this.text);
+
+                                Intent notificationIntent = new Intent(context.getApplicationContext(), wifilistner.class);
                                 PendingIntent contentIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, notificationIntent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
                                 builder.setContentIntent(contentIntent);
@@ -65,6 +71,15 @@ public class WifiChange extends BroadcastReceiver  {
                                 // Add as notification
                                 NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                                 manager.notify(0, builder.build());
+
+                                    //Now dispatch to js
+                                    final Intent intent2 = new Intent("didShow");
+
+                                    Bundle b = new Bundle();
+                                    b.putString( "bssid", bssid.toUpperCase() );
+                                    intent.putExtras( b);
+
+                                    LocalBroadcastManager.getInstance(context.getApplicationContext()).sendBroadcastSync(intent);
 
 
 

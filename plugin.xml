@@ -1,18 +1,61 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova.plugin.wifi.listner" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>cordova.plugin.wifi.listner</name>
-    <js-module name="cordova.plugin.wifi.listner" src="www/wifilistner.js">
-        <clobbers target="cordova.plugins.cordova.plugin.wifi.listner" />
+<plugin id="com.avifa.wifilistner" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    
+    <name>wifilistner</name>
+
+
+    <js-module name="wifilistner" src="www/wifilistner.js">
+        <clobbers target="wifilistner" />
     </js-module>
+    
+    
+    
     <platform name="android">
+
+
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="cordova.plugin.wifi.listner">
-                <param name="android-package" value="cordova.plugin.wifi.listner.cordova.plugin.wifi.listner" />
+            <feature name="wifilistner">
+                <param name="android-package" value="com.avifa.wifilistner.wifilistner" />
             </feature>
         </config-file>
-        <config-file parent="/*" target="AndroidManifest.xml" />
-        <source-file src="src/android/cordova.plugin.wifi.listner.java" target-dir="src/cordova.plugin.wifi.listner/cordova.plugin.wifi.listner" />
+        
+
+    
+        <source-file src="src/android/wifilistner.java" target-dir="src/com/avifa/wifilistner/wifilistner" />
+        <source-file src="src/android/WifiChange.java" target-dir="src/com/avifa/wifilistner/wifilistner" />
+        
+        <framework src="src/android/wifilistner.gradle" custom="true" type="gradleReference" />
+        
+        
+        <config-file parent="/*" target="AndroidManifest.xml" >
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.INTERNET"/>
+        </config-file>
+
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+    
+        <receiver android:name=".WifiChange" >
+
+            <intent-filter>
+                <!--protected-broadcast: Special broadcast that only the system can send-->
+                <!--Corresponds to: android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION-->
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+
+        </receiver>
+
+</config-file>
+
+
     </platform>
+
+
+
+
+
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
             <feature name="cordova.plugin.wifi.listner">
@@ -21,4 +64,5 @@
         </config-file>
         <source-file src="src/ios/cordova.plugin.wifi.listner.m" />
     </platform>
+    
 </plugin>
