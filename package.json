@@ -5,8 +5,7 @@
   "cordova": {
     "id": "cordova-plugin-wifi-listner",
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ]
   },
   "repository": {

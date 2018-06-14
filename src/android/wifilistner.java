@@ -22,6 +22,11 @@ import android.net.wifi.*;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 
+
+import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -30,24 +35,35 @@ public class wifilistner extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         String mac = args.getString(0);
-        String text = args.getString(2);
+        
         String title = args.getString(1);
-        
-        final Context context = this.cordova.getActivity().getApplicationContext();
-        
-        BroadcastReceiver broadcastReceiver = new WifiChange(mac, context ,title,text);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        String nowconnected = args.getString(2);
+        String nowdisconnected = args.getString(3);
 
-        
+
+
+
+
+        final Context context = this.cordova.getActivity().getApplicationContext();
 
         if (action.equals("startTracker")) {
-            webView.getContext().registerReceiver(broadcastReceiver, intentFilter);
-            return true;
+            
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+                Editor edit = settings.edit();
+                edit.putString("mac", "00:17:7C:6B:C1:83");
+                edit.putString("nowconnected", nowconnected);
+                edit.putString("nowdisconnected", nowdisconnected);
+                edit.putBoolean("active", true);
+                edit.apply();
+                return true;
         }
 
         if (action.equals("stopTracker")) {
-            webView.getContext().unregisterReceiver(broadcastReceiver);
+
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+                Editor edit = settings.edit();
+                edit.putBoolean("active",false);
+                edit.apply();
             return true;
         }
         return false;

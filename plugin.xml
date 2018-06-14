@@ -3,66 +3,38 @@
     
     
     <name>wifilistner</name>
-
-
     <js-module name="wifilistner" src="www/wifilistner.js">
         <clobbers target="wifilistner" />
     </js-module>
     
-    
-    
+
     <platform name="android">
-
-
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="wifilistner">
-                <param name="android-package" value="com.avifa.wifilistner.wifilistner" />
+                <param name="android-package" value="com.avifa.wifilistner.wifilistner"/>
             </feature>
         </config-file>
-        
-
-    
-        <source-file src="src/android/wifilistner.java" target-dir="src/com/avifa/wifilistner/wifilistner" />
-        <source-file src="src/android/WifiChange.java" target-dir="src/com/avifa/wifilistner/wifilistner" />
-        
-        <framework src="src/android/wifilistner.gradle" custom="true" type="gradleReference" />
-        
-        
+        <source-file src="src/android/wifilistner.java" target-dir="src/com/avifa/wifilistner/wifilistner"/>
+        <source-file src="src/android/WifiChange.java" target-dir="src/com/avifa/wifilistner/wifilistner"/>
+        <framework src="src/android/wifilistner.gradle" custom="true" type="gradleReference"/>
         <config-file parent="/*" target="AndroidManifest.xml" >
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
             <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
             <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
         </config-file>
-
-
-    <config-file target="AndroidManifest.xml" parent="/manifest/application">
-    
-        <receiver android:name=".WifiChange" >
-
-            <intent-filter>
-                <!--protected-broadcast: Special broadcast that only the system can send-->
-                <!--Corresponds to: android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION-->
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-            </intent-filter>
-
-        </receiver>
-
-</config-file>
-
-
-    </platform>
-
-
-
-
-
-    <platform name="ios">
-        <config-file parent="/*" target="config.xml">
-            <feature name="cordova.plugin.wifi.listner">
-                <param name="ios-package" value="cordova.plugin.wifi.listner" />
-            </feature>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+                <receiver android:name=".WifiChange">
+                    <intent-filter>
+                        <action android:name="android.net.wifi.STATE_CHANGE" />
+                        <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
+                    </intent-filter>
+                </receiver>
+                <service android:enabled="true" android:name=".WifiChange$WifiActiveService"></service>
         </config-file>
-        <source-file src="src/ios/cordova.plugin.wifi.listner.m" />
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <service android:enabled="true" android:name=".WifiActiveService"></service>
+        </config-file>
     </platform>
-    
 </plugin>
